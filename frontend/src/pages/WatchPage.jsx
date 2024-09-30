@@ -5,19 +5,13 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ReactPlayer from "react-player";
+
 import {
   ORIGINAL_IMG_BASE_URL,
   SMALL_IMG_BASE_URL,
 } from "../utils/constants.js";
 import WatchPageSkeleton from "../components/skeletons/WatchPageSkeleton.jsx";
-
-function formatReleaseDate(date) {
-  return new Date(date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
+import { formatReleaseDate } from "../utils/dateFunction.js";
 
 const WatchPage = () => {
   const { id } = useParams();
@@ -101,10 +95,26 @@ const WatchPage = () => {
       });
     }
   };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black p-10">
         <WatchPageSkeleton />
+      </div>
+    );
+  }
+
+  if (!content || content.length === 0) {
+    return (
+      <div className="bg-black text-white h-screen">
+        <div className="max-w-6xl mx-auto">
+          <Navbar />
+          <div className="text-center mx-auto px-4 py-8 h-full mt-40">
+            <h2 className="text-2xl sm:text-5xl font-bold text-balance">
+              Content not found
+            </h2>
+          </div>
+        </div>
       </div>
     );
   }
